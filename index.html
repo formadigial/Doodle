@@ -32,8 +32,23 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     }
     .logo img { height: 30px; width: auto; }
-    nav { display: flex; flex-wrap: wrap; }
-    nav a {
+    
+    /* New menu toggle structure */
+    #menu-toggle {
+      display: none;
+    }
+    .menu-icon {
+      display: none;
+      font-size: 30px;
+      color: var(--light);
+      cursor: pointer;
+    }
+
+    nav.nav-links {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    nav.nav-links a {
       margin-left: 20px;
       text-decoration: none;
       color: var(--light);
@@ -41,7 +56,31 @@
       transition: color 0.3s;
       padding: 8px 0;
     }
-    nav a:hover { color: var(--peach); }
+    nav.nav-links a:hover { color: var(--peach); }
+
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+      nav.nav-links {
+        display: none;
+        flex-direction: column;
+        background: rgba(6, 6, 8, 0.95);
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+      }
+      #menu-toggle:checked + .menu-icon + nav.nav-links {
+        display: flex;
+      }
+      nav.nav-links a {
+        margin: 15px 0;
+      }
+    }
+
     .hero {
       background: linear-gradient(rgba(6, 6, 8, 0.6), rgba(6, 6, 8, 0.6)), url("bg.jpeg") center/cover no-repeat;
       height: 100vh;
@@ -100,8 +139,6 @@
       font-size: 2rem;
       margin-right: 15px;
     }
-
-    /* Seamless Marquee Section */
     .social-proof {
       padding: 60px 20px;
       background: var(--dark);
@@ -130,7 +167,6 @@
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
     }
-
     .cta {
       padding: 80px 20px;
       background: var(--blue);
@@ -147,13 +183,16 @@
 </head>
 
 <body>
+
   <header>
     <div class="logo"><img src="logo.png" alt="FORMA Logo"></div>
-    <nav>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <nav class="nav-links">
       <a href="#">Home</a>
-      <a href="#">Services</a>
+      <a href="#services">Services</a>
       <a href="#contact">Contact</a>
-      <a href="#contact">About</a>
+      <a href="#about">About</a>
     </nav>
   </header>
 
@@ -165,7 +204,7 @@
     </div>
   </section>
 
-  <section class="custom-solutions">
+  <section class="custom-solutions" id="services">
     <div class="container">
       <h2>We Create Web Agencies Delivering Custom Solutions</h2>
       <p>Our award-winning teams specialize in crafting fully customized digital solutions designed for your specific business objectives — from UX/UI design and branding to web development and digital marketing.</p>
@@ -204,5 +243,6 @@
   <footer>
     <p>&copy; 2025 Forma Digital Agency • Designed for growth</p>
   </footer>
+
 </body>
 </html>
