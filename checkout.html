@@ -102,10 +102,10 @@
   <button type="submit">Place Order</button>
 </form>
 
-<p id="orderStatus"></p>
+<p id="orderStatus" style="color: red;"></p>
 
 <script>
-  const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbz8MVzh0o8mhIfW5RN2w_B-P4KE6pDI94jepTrZihEctd20FHJuQDnxVWuofwDsyvN_aA/exec'; // 🔁 Replace with your script URL
+  const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbz8MVzh0o8mhIfW5RN2w_B-P4KE6pDI94jepTrZihEctd20FHJuQDnxVWuofwDsyvN_aA/exec';
 
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
   const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
@@ -120,37 +120,32 @@
   const upiDetails = document.getElementById("upiDetails");
   const txnField = document.getElementById("txnField");
 
-  // Show/hide UPI fields on radio select
-function toggleUPIDetails() {
-  if (upiRadio.checked) {
-    upiDetails.style.display = "block";
-    txnField.required = true;
-  } else {
-    upiDetails.style.display = "none";
-    txnField.required = false;
-    txnField.value = ""; // Clear transaction ID when COD is selected
+  function toggleUPIDetails() {
+    if (upiRadio.checked) {
+      upiDetails.style.display = "block";
+      txnField.required = true;
+    } else {
+      upiDetails.style.display = "none";
+      txnField.required = false;
+      txnField.value = "";
+    }
   }
-}
 
-// Run on radio change
-document.querySelectorAll('input[name="payment"]').forEach((radio) => {
-  radio.addEventListener("change", toggleUPIDetails);
-});
+  document.querySelectorAll('input[name="payment"]').forEach(radio => {
+    radio.addEventListener("change", toggleUPIDetails);
+  });
 
-// Run on page load
-window.addEventListener("DOMContentLoaded", () => {
-  toggleUPIDetails();
-});
+  window.addEventListener("DOMContentLoaded", () => {
+    toggleUPIDetails();
+  });
 
-
-  // Handle Form Submission
   document.getElementById("orderForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const name = this.name.value.trim();
     const email = this.email.value.trim();
     const address = this.address.value.trim();
-    const payment = this.payment.value;
+    const payment = document.querySelector('input[name="payment"]:checked')?.value;
     const txn = payment === "upi" ? this.txn.value.trim() : "COD";
 
     if (!name || !email || !address || !payment || (payment === "upi" && !txn)) {
@@ -175,14 +170,22 @@ window.addEventListener("DOMContentLoaded", () => {
         "Content-Type": "application/json"
       }
     })
-    .then(res => res.json())
-    .then(() => {
-      localStorage.removeItem("cart");
-      document.getElementById("orderStatus").textContent = "✅ Order placed successfully!";
-      setTimeout(() => window.location.href = "success.html", 1500);
+    .then(async res => {
+      const text = await res.text();
+      try {
+        const json = JSON.parse(text);
+        localStorage.removeItem("cart");
+        document.getElementById("orderStatus").style.color = "green";
+        document.getElementById("orderStatus").textContent = "✅ Order placed successfully!";
+        setTimeout(() => window.location.href = "success.html", 1500);
+      } catch (err) {
+        console.error("Invalid JSON:", text);
+        document.getElementById("orderStatus").textContent = "❌ Server error. Please try again.";
+      }
     })
-    .catch(() => {
-      document.getElementById("orderStatus").textContent = "❌ Something went wrong. Try again.";
+    .catch(err => {
+      console.error(err);
+      document.getElementById("orderStatus").textContent = "❌ Network error. Try again later.";
     });
   });
 </script>
