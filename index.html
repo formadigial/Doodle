@@ -1,248 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FORMA Digital Agency</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --peach: #fad3cf;
-      --lavender: #a696c8;
-      --blue: #2470a0;
-      --dark: #060608;
-      --light: #fafafa;
-      --violet: rgb(113, 49, 133);
-    }
-    * {margin: 0; padding: 0; box-sizing: border-box;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SheetShop</title>
+<style>
+
     body {
-      font-family: 'Poppins', sans-serif;
-      color: var(--light);
-      background: var(--violet);
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: rgba(6, 6, 8, 0.95);
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-    }
-    .logo img { height: 30px; width: auto; }
-    
-    /* New menu toggle structure */
-    #menu-toggle {
-      display: none;
-    }
-    .menu-icon {
-      display: none;
-      font-size: 30px;
-      color: var(--light);
-      cursor: pointer;
-    }
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f7f7f7;
+}
 
-    nav.nav-links {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    nav.nav-links a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: var(--light);
-      font-weight: 500;
-      transition: color 0.3s;
-      padding: 8px 0;
-    }
-    nav.nav-links a:hover { color: var(--peach); }
+header {
+  background: #222;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
 
-    @media (max-width: 768px) {
-      .menu-icon {
-        display: block;
-      }
-      nav.nav-links {
-        display: none;
-        flex-direction: column;
-        background: rgba(6, 6, 8, 0.95);
-        position: absolute;
-        top: 70px;
-        right: 0;
-        width: 100%;
-        text-align: center;
-        padding: 20px 0;
-      }
-      #menu-toggle:checked + .menu-icon + nav.nav-links {
-        display: flex;
-      }
-      nav.nav-links a {
-        margin: 15px 0;
-      }
-    }
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
 
-    .hero {
-      background: linear-gradient(rgba(6, 6, 8, 0.6), rgba(6, 6, 8, 0.6)), url("bg.jpeg") center/cover no-repeat;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 0 20px;
-      margin-top: 80px;
-    }
-    .hero-content { max-width: 800px; }
-    .hero h1 { font-size: 3rem; margin-bottom: 20px; }
-    .hero p { font-size: 1.2rem; margin-bottom: 30px; color: var(--peach); }
-    .btn-primary {
-      display: inline-block;
-      padding: 15px 30px;
-      background: var(--peach);
-      color: var(--dark);
-      border-radius: 6px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background 0.3s, transform 0.2s;
-      cursor: pointer;
-    }
-    .btn-primary:hover {
-      background: var(--light);
-      transform: scale(1.03);
-    }
-    .custom-solutions {
-      background: linear-gradient(120deg, rgba(120,65,160,0.9), rgba(149,72,172,0.9));
-      padding: 100px 20px;
-      text-align: center;
-    }
-    .custom-solutions .container { max-width: 1000px; margin: auto; }
-    .custom-solutions h2 { font-size: 2.8rem; margin-bottom: 20px; }
-    .custom-solutions p { font-size: 1.1rem; max-width: 800px; margin: auto; }
-    .features {
-      display: flex; flex-wrap: wrap; justify-content: center; margin-top: 50px;
-    }
-    .feature-item {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 10px;
-      padding: 30px 40px;
-      margin: 15px;
-      flex: 1 1 250px;
-      max-width: 320px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .feature-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    }
-    .checkmark {
-      color: var(--peach);
-      font-size: 2rem;
-      margin-right: 15px;
-    }
-    .social-proof {
-      padding: 60px 20px;
-      background: var(--dark);
-      overflow: hidden;
-      position: relative;
-    }
-    .logos-wrapper {
-      overflow: hidden;
-      width: 100%;
-    }
-    .logos-track {
-      display: flex;
-      width: max-content;
-      animation: scroll-marquee 30s linear infinite;
-    }
-    .logos-track img {
-      margin: 0 40px;
-      filter: grayscale(1) opacity(0.7);
-      transition: filter 0.3s;
-      max-height: 50px;
-    }
-    .logos-track img:hover {
-      filter: none;
-    }
-    @keyframes scroll-marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-    .cta {
-      padding: 80px 20px;
-      background: var(--blue);
-      text-align: center;
-    }
-    .cta h2 { font-size: 2.2rem; margin-bottom: 25px; }
-    footer {
-      padding: 20px;
-      text-align: center;
-      background: var(--dark);
-      color: var(--peach);
-    }
-  </style>
+.product-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.checkout-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+</style>
 </head>
-
 <body>
+  <header><h1>🪑 SheetShop</h1></header>
+  <main>
+    <div id="products" class="product-list"></div>
+    <button onclick="location.href='checkout.html'" class="checkout-btn">Go to Checkout</button>
+  </main>
+  <script>
 
-  <header>
-    <div class="logo"><img src="logo.png" alt="FORMA Logo"></div>
-    <input type="checkbox" id="menu-toggle">
-    <label for="menu-toggle" class="menu-icon">&#9776;</label>
-    <nav class="nav-links">
-      <a href="#">Home</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
-      <a href="#about">About</a>
-    </nav>
-  </header>
+    const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbz8MVzh0o8mhIfW5RN2w_B-P4KE6pDI94jepTrZihEctd20FHJuQDnxVWuofwDsyvN_aA/exec'; // replace with your Google Apps Script deployed URL
+let cart = [];
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>We Build Engaging, High‑Converting Websites</h1>
-      <p>Strategic design + smart implementation = real business results.</p>
-      <a href="#contact" class="btn-primary" id="quoteBtn">Request a Quote</a>
-    </div>
-  </section>
+fetch(SHEET_API_URL)
+  .then(res => res.json())
+  .then(data => {
+    const productsEl = document.getElementById("products");
+    data.forEach(product => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>₹${product.price}</p>
+        <button onclick='addToCart(${JSON.stringify(product)})'>Add to Cart</button>
+      `;
+      productsEl.appendChild(div);
+    });
+  });
 
-  <section class="custom-solutions" id="services">
-    <div class="container">
-      <h2>We Create Web Agencies Delivering Custom Solutions</h2>
-      <p>Our award-winning teams specialize in crafting fully customized digital solutions designed for your specific business objectives — from UX/UI design and branding to web development and digital marketing.</p>
-      <div class="features">
-        <div class="feature-item"><span class="checkmark">&#10004;</span><p>End-to-End Web Development Solutions</p></div>
-        <div class="feature-item"><span class="checkmark">&#10004;</span><p>Creative UX/UI Design Approach</p></div>
-        <div class="feature-item"><span class="checkmark">&#10004;</span><p>Data-Driven Digital Marketing Services</p></div>
-      </div>
-    </div>
-  </section>
+function addToCart(product) {
+  cart.push(product);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(`${product.name} added to cart!`);
+}
 
-  <section class="social-proof">
-    <div class="logos-wrapper">
-      <div class="logos-track">
-        <img src="logo1.svg" alt="Client 1">
-        <img src="logo2.svg" alt="Client 2">
-        <img src="logo3.svg" alt="Client 3">
-        <img src="logo4.svg" alt="Client 4">
-        <img src="logo1.svg" alt="Client 1">
-        <img src="logo2.svg" alt="Client 2">
-        <img src="logo3.svg" alt="Client 3">
-        <img src="logo4.svg" alt="Client 4">
-        <img src="logo1.svg" alt="Client 1">
-        <img src="logo2.svg" alt="Client 2">
-        <img src="logo3.svg" alt="Client 3">
-        <img src="logo4.svg" alt="Client 4">
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="cta">
-    <h2>Ready to Start?</h2>
-    <a href="#contact-form" class="btn-primary">Let's Talk</a>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Forma Digital Agency • Designed for growth</p>
-  </footer>
-
+  </script>
 </body>
 </html>
