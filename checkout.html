@@ -146,7 +146,8 @@
     const email = this.email.value.trim();
     const address = this.address.value.trim();
     const payment = document.querySelector('input[name="payment"]:checked')?.value;
-    const txn = payment === "upi" ? this.txn.value.trim() : "COD";
+    const txn = payment === "upi" ? document.getElementById("txnField").value.trim() : "COD";
+
 
     if (!name || !email || !address || !payment || (payment === "upi" && !txn)) {
       document.getElementById("orderStatus").textContent = "❌ Please fill all required fields.";
