@@ -113,7 +113,7 @@
   document.getElementById("totalDisplay").textContent = total;
   document.getElementById("amountText").textContent = total;
   document.getElementById("upiLink").href =
-    `upi://pay?pa=yourupi@okicici&pn=LuxeLiving&am=${total}&cu=INR&tn=Furniture+Order`;
+    `upi://pay?pa=mhdshinas17@okicici&pn=LuxeLiving&am=${total}&cu=INR&tn=Furniture+Order`;
 
   const upiRadio = document.querySelector('input[value="upi"]');
   const codRadio = document.querySelector('input[value="cod"]');
@@ -121,17 +121,27 @@
   const txnField = document.getElementById("txnField");
 
   // Show/hide UPI fields on radio select
-  document.querySelectorAll('input[name="payment"]').forEach((radio) => {
-    radio.addEventListener("change", () => {
-      if (upiRadio.checked) {
-        upiDetails.style.display = "block";
-        txnField.required = true;
-      } else {
-        upiDetails.style.display = "none";
-        txnField.required = false;
-      }
-    });
-  });
+function toggleUPIDetails() {
+  if (upiRadio.checked) {
+    upiDetails.style.display = "block";
+    txnField.required = true;
+  } else {
+    upiDetails.style.display = "none";
+    txnField.required = false;
+    txnField.value = ""; // Clear transaction ID when COD is selected
+  }
+}
+
+// Run on radio change
+document.querySelectorAll('input[name="payment"]').forEach((radio) => {
+  radio.addEventListener("change", toggleUPIDetails);
+});
+
+// Run on page load
+window.addEventListener("DOMContentLoaded", () => {
+  toggleUPIDetails();
+});
+
 
   // Handle Form Submission
   document.getElementById("orderForm").addEventListener("submit", function (e) {
